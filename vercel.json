@@ -1,5 +1,4 @@
 {
-  "projectId": "sheaf-pdf-merger",
   "buildCommand": "cd frontend && npm install && npm run build",
   "outputDirectory": "frontend/build",
   "functions": {},
