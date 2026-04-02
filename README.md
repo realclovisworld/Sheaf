@@ -1,42 +1,58 @@
 # 𝐒 Sheaf — PDF Merger
 
-> **Bring your pages together.** A beautiful, Apple-inspired web application for merging multiple PDF files into a single document.
+> **Bring your pages together.** A beautiful, Apple-inspired web application for merging multiple PDF files into a single document. No backend. No limits. All processing happens in your browser.
 
 ---
 
-## 📸 How It Works
+## 📸 How It Works — Step by Step
+
+| Step | Action | What Happens |
+|------|--------|--------------|
+| **1️⃣ Open App** | Visit [sheaf.vercel.app](https://sheaf.vercel.app) | See Sheaf logo, title, and upload interface |
+| **2️⃣ Gather Files** | Drag & drop 2-10 PDF files into the box OR click "Select files" | Files are validated (PDF only, ≤10MB each) |
+| **3️⃣ See Your Selection** | Files appear in a numbered list with checkmarks | Shows file names, sizes, and total progress bar (0-20MB) |
+| **4️⃣ Review Total Size** | Look at progress bar below the file list | Bar turns red if you exceed 20MB limit |
+| **5️⃣ Click "Bind Your Pages"** | Button activates when you have 2+ files under 20MB total | App starts merging (takes 1-5 seconds) |
+| **6️⃣ Wait for Processing** | See "Binding..." status in the upload area | pdf-lib merges PDFs in your browser (client-side) |
+| **7️⃣ Download Result** | Browser automatically downloads `sheaf.pdf` | File contains all pages from your PDFs in order |
+| **8️⃣ See Success Message** | "Your sheaf is ready" appears for 2 seconds | List clears, ready for next merge |
+
+---
+
+### Visual Data Flow
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                                                             │
-│  1. GATHER YOUR PAGES                                       │
-│     ┌─────────────────────────────────────────────────────┐ │
-│     │                                                     │ │
-│     │  📄   Drop PDFs here                               │ │
-│     │       or click to browse                           │ │
-│     │       [Select files]                               │ │
-│     │                                                     │ │
-│     │  Upload pdf files and bind a maximum of 50MB       │ │
-│     └─────────────────────────────────────────────────────┘ │
-│                          ⬇️                                  │
-│  2. REVIEW YOUR SELECTION                                    │
-│     ┌──────────────────────────────────────────────────┐    │
-│     │ [1] 📄 document1.pdf      2.5 MB      ✓          │    │
-│     │ [2] 📄 document2.pdf      1.8 MB      ✓          │    │
-│     │ [3] 📄 document3.pdf      3.2 MB      ✓          │    │
-│     └──────────────────────────────────────────────────┘    │
-│                                                             │
-│     📊 Progress: 7.50 / 50.00 MB                            │
-│                          ⬇️                                  │
-│  3. BIND YOUR PAGES                                         │
-│     ┌──────────────────────────┐                           │
-│     │  [Bind your pages]       │  ← Click to merge       │
-│     └──────────────────────────┘                           │
-│                          ⬇️                                  │
-│  4. YOUR SHEAF IS READY                                     │
-│     📥 sheaf.pdf downloaded                                │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
+You Select Files
+      ⬇️
+┌─────────────────────────────┐
+│  Frontend Validation        │  ← Checks file type, size, quantity
+│  • PDF only?                │
+│  • ≤10MB per file?          │
+│  • 2-10 files total?        │
+└─────────────────────────────┘
+      ⬇️
+Files Displayed in List
+┌─────────────────────────────┐
+│ [1] ✓ document1.pdf  2.5MB  │
+│ [2] ✓ document2.pdf  1.8MB  │
+│ [3] ✓ document3.pdf  3.2MB  │
+│                             │
+│ Progress: 7.50 / 20.00 MB   │
+└─────────────────────────────┘
+      ⬇️
+You Click "Bind Your Pages"
+      ⬇️
+┌─────────────────────────────┐
+│  pdf-lib Processing         │  ← Runs in your browser
+│  • Load each PDF            │
+│  • Copy all pages           │
+│  • Combine into 1 PDF       │
+│  • Create download blob     │
+└─────────────────────────────┘
+      ⬇️
+Browser Downloads sheaf.pdf
+      ⬇️
+✅ Success! "Your sheaf is ready"
 ```
 
 ---
@@ -44,29 +60,23 @@
 ## ✨ Features
 
 - **🎯 Drag-and-Drop Interface** — Gather PDFs intuitively with a frosted glass design
-- **📋 Real-Time Validation** — See file count, size tracking (max 50MB total)
+- **📋 Real-Time Validation** — See file count, size tracking (max 20MB total)
 - **📊 Progress Indicator** — Visual size meter shows exactly how much capacity is used
-- **⚡ Fast Merging** — Powered by pikepdf for rapid, reliable PDF processing
+- **⚡ Fast Merging** — Powered by pdf-lib, runs entirely in your browser
 - **🍎 Apple-Inspired Design** — Clean, minimal interface with smooth animations
 - **🌍 Responsive Layout** — Works beautifully on desktop, tablet, and mobile
-- **☁️ Serverless Deployment** — Runs on Vercel with zero infrastructure to manage
+- **🔒 Privacy First** — No server, no files stored, all processing client-side
+- **⚡ Instant Deploys** — Static site on Vercel, no backend infrastructure
 
 ---
 
 ## 🛠️ Technical Stack
 
-### Backend (Python)
+### Frontend (React + pdf-lib)
 | Component | Technology | Purpose |
 |-----------|-----------|---------|
-| **Framework** | FastAPI | Modern, fast web framework |
-| **PDF Processing** | pikepdf | Robust, efficient PDF merging |
-| **Serverless Adapter** | Mangum | Vercel compatibility |
-| **Server** | Uvicorn (local) | ASGI development server |
-
-### Frontend (React)
-| Component | Technology | Purpose |
-|-----------|-----------|---------|
-| **Framework** | React 18 | Component-based UI |
+| **Framework** | React 18.2 | Component-based UI |
+| **PDF Processing** | pdf-lib 1.17.1 | **Client-side PDF merging** |
 | **Styling** | CSS Custom Properties | Design tokens system |
 | **Build Tool** | Create React App | Webpack + Babel setup |
 | **Design System** | Apple HIG | Human Interface Guidelines |
@@ -74,7 +84,7 @@
 ### Deployment
 | Platform | Configuration | Status |
 |----------|---------------|--------|
-| **Vercel** | Serverless Functions | Production deployment |
+| **Vercel** | Static Site (No Serverless) | Production deployment |
 | **GitHub** | Git repository | Source control |
 
 ---
@@ -82,9 +92,8 @@
 ## 🚀 Quick Start
 
 ### Prerequisites
-- **Python** 3.9+
 - **Node.js** 14+ (with npm)
-- **Git**
+- **Git** (optional, for cloning)
 
 ### 1️⃣ Setup (One-time)
 
@@ -92,41 +101,29 @@
 # Clone and navigate
 cd ~/Documents/PDF_Merger
 
-# Activate Python virtual environment
-python3 -m venv venv
-source venv/bin/activate
-
-# Install Python dependencies
-pip install -r requirements.txt
-
 # Install frontend dependencies
 cd frontend
 npm install
 cd ..
 ```
 
-### 2️⃣ Run Development Servers
+### 2️⃣ Run the App
 
-**Terminal 1 — Backend API:**
-```bash
-source venv/bin/activate
-python -m uvicorn api.merge:app --reload
-```
-Backend: **http://127.0.0.1:8000**
-
-**Terminal 2 — Frontend App:**
+**Start the development server:**
 ```bash
 cd frontend
 npm start
 ```
-Frontend: **http://localhost:3000**
+App opens automatically at: **http://localhost:3000**
 
 ### 3️⃣ Test the App
 
 1. Open **http://localhost:3000**
 2. Drag 2-3 PDF files into the upload box
-3. Click **"Bind your pages"**
-4. Download your merged PDF!
+3. See files appear with numbering and checkmarks
+4. Watch the progress bar as you add more files
+5. Click **"Bind your pages"**
+6. Download your merged `sheaf.pdf`!
 
 ---
 
@@ -135,18 +132,14 @@ Frontend: **http://localhost:3000**
 ```
 PDF_Merger/
 │
-├── 📄 Documentation
+├── 📄 Main Documentation
 │   ├── README.md              ← You are here
-│   ├── DESIGN.md             ← Apple design system
-│   ├── QUICKSTART.md         ← Local dev guide
-│   ├── DEPLOYMENT.md         ← Vercel setup
-│   └── ORGANIZATION.md       ← File structure reference
+│   └── STRUCTURE.md           ← Technical architecture
 │
 ├── ⚙️ Configuration
-│   ├── vercel.json           ← Vercel build config
-│   ├── requirements.txt       ← Python packages
-│   ├── .gitignore           ← Git exclusions
-│   └── .vercelignore        ← Vercel exclusions
+│   ├── vercel.json            ← Vercel deployment config
+│   ├── .gitignore             ← Git exclusions
+│   └── .vercelignore          ← Vercel exclusions
 │
 ├── 🔧 Backend (Python)
 │   └── api/
@@ -159,79 +152,106 @@ PDF_Merger/
 │       │   ├── index.html
 │       │   └── logo.jpeg     ← App logo
 │       │
-│       ├── src/
 │       │   ├── components/
-│       │   │   ├── FileUploader.jsx/css   (Drag-drop interface)
-│       │   │   ├── FileList.jsx/css       (File display)
-│       │   │   ├── MergeButton.jsx/css    (Action button)
-│       │   │   └── UploadProgressBar.jsx/css (Size tracker)
-│       │   ├── App.jsx/css               (Main orchestrator)
-│       │   ├── index.css                 (Global + design tokens)
-│       │   └── index.js                  (React entry point)
+│       │   │   ├── FileUploader.jsx/css       (Drag-drop interface)
+│       │   │   ├── FileList.jsx/css           (File display with numbering)
+│       │   │   ├── MergeButton.jsx/css        (Action button)
+│       │   │   └── UploadProgressBar.jsx/css  (Size tracker)
+│       │   │
+│       │   ├── utils/
+│       │   │   └── merge.js                   (pdf-lib integration)
+│       │   │
+│       │   ├── App.jsx/css                    (Main orchestrator)
+│       │   ├── index.css                      (Global + design tokens)
+│       │   └── index.js                       (React entry point)
 │       │
 │       └── package.json
 │
-└── 📚 Virtual Environment
-    └── venv/                ← Python packages (git-ignored)
+└── 📚 Ignored (Not in Git)
+    ├── frontend/node_modules/          ← npm packages
+    ├── frontend/build/                 ← Production build
+    └── venv/                           ← Python packages (if exists)
 ```
 
 ### What's Tracked in Git
-- ✅ Source code (backend + frontend)
-- ✅ Configuration files
-- ✅ Documentation
-- ✅ Logo and static assets
+- ✅ Source code (React components + utilities)
+- ✅ Configuration files (vercel.json)
+- ✅ Documentation (README.md, STRUCTURE.md)
+- ✅ Design assets (logo.jpeg)
 
 ### What's Ignored
-- ❌ `venv/` — Python virtual environment
 - ❌ `frontend/node_modules/` — npm packages
 - ❌ `frontend/build/` — Production build
+- ❌ `venv/` — Python packages (legacy)
 - ❌ `.env`, `.DS_Store`, cache files
+
+---
+
+## ⚙️ How It Actually Works (Technical)
+
+**No backend. All processing happens in your browser.**
+
+1. **File Upload** → Browser validates files (type, size, quantity)
+2. **User Review** → Lists files, shows total size, enables button
+3. **Click Merge** → Calls `mergePDFs()` utility function
+4. **pdf-lib Processing** → 
+   - Loads each PDF into memory
+   - Copies all pages into a new document
+   - Exports as binary blob
+5. **Browser Download** → Triggers native download of `sheaf.pdf`
+6. **Success** → Shows confirmation, clears files
+
+**Why this is better:**
+- ✅ No 2048MB memory limit (Vercel Hobby plan issue eliminated)
+- ✅ Works offline (after initial load)
+- ✅ Instant (no network round trips)
+- ✅ Private (files never leave your device)
 
 ---
 
 ## 🔌 API Reference
 
-### POST `/api/merge`
-Merge multiple PDF files into a single document.
+**No API endpoints.** All merging happens client-side with pdf-lib.
 
-**Request:**
-```bash
-curl -X POST http://localhost:8000/api/merge \
-  -F "files=@document1.pdf" \
-  -F "files=@document2.pdf" \
-  -F "files=@document3.pdf" \
-  -o sheaf.pdf
+To use Sheaf programmatically, import the merge function:
+
+```javascript
+import { mergePDFs } from './src/utils/merge';
+
+const files = [file1, file2, file3]; // Array of File objects
+const result = await mergePDFs(files);
+// result = { blob, name: 'sheaf.pdf', pages: totalPageCount }
+
+// Download the blob
+const url = window.URL.createObjectURL(result.blob);
+const link = document.createElement('a');
+link.href = url;
+link.download = result.name;
+link.click();
 ```
-
-**Response:** Binary PDF file (application/pdf)
 
 **Constraints:**
 - **Minimum files:** 2
 - **Maximum files:** 10
 - **Max file size:** 10 MB each
-- **Max total size:** 50 MB
+- **Max total size:** 20 MB (browser memory)
 - **File type:** PDF only
-- **Timeout:** 30 seconds
+- **Processing:** 1-5 seconds per merge
 
-**Error Messages:**
+**Error Messages (All Client-Side):**
 | Error | Cause | Fix |
 |-------|-------|-----|
-| `Select at least two PDFs.` | Only 1 file uploaded | Add more PDFs |
-| `This sheaf would be too heavy.` | Total > 50MB | Remove or reduce files |
+| `Gather at least two pages.` | Only 1 file uploaded | Add more PDFs |
+| `This sheaf would be too heavy.` | Total > 20MB | Remove or reduce files |
 | `Only PDF files are supported.` | Non-PDF file selected | Select PDF files only |
-| `Binding failed.` | Server error | Check file format |
-
-### GET `/health`
-Health check endpoint.
-
-**Response:**
-```json
-{ "status": "ok" }
-```
+| `Maximum 10 PDFs per merge.` | More than 10 files | Upload fewer files |
+| `One or more PDF files are corrupted.` | Invalid PDF | Check file format |
 
 ---
 
-## 📦 Deployment to Vercel
+## 📦 Deployment to Vercel (Hobby Plan Compatible)
+
+**Key advantage:** Static site deployment. No serverless functions. No memory limits.
 
 ### Step 1: Push to GitHub
 ```bash
@@ -245,10 +265,17 @@ git push origin main
 2. Click **"Import Project"**
 3. Select your GitHub repository
 4. Vercel auto-detects `vercel.json`
-5. Click **"Deploy"** and wait 2-3 minutes
+5. Click **"Deploy"** (instant build, no serverless compilation)
 
 ### Step 3: Test Production
 Visit your live URL: `https://your-project.vercel.app`
+
+**Why this works on Hobby plan:**
+- ✅ Static HTML/CSS/JS only (no backend)
+- ✅ No Python runtime needed
+- ✅ No 2048MB memory limit
+- ✅ Instant cold starts
+- ✅ Works offline after first load
 
 ---
 
