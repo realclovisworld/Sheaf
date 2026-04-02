@@ -3,39 +3,37 @@
   display: flex;
   flex-direction: column;
   background-color: var(--color-bg-primary);
-  padding: var(--space-3) 0 0 0;
+  padding: 0;
 }
 
-/* App Branding Header */
-.app-branding {
+/* Branding Header at Top Left */
+.app-branding-header {
   display: flex;
   align-items: center;
-  gap: var(--space-1);
-  padding: var(--space-3) var(--space-3);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-  background-color: var(--color-surface);
+  gap: var(--space-2);
+  padding: var(--space-3);
+  text-align: left;
 }
 
-@media (prefers-color-scheme: dark) {
-  .app-branding {
-    border-bottom-color: rgba(255, 255, 255, 0.08);
-  }
+.app-logo-image {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  flex-shrink: 0;
 }
 
-.app-logo {
-  font-size: 20px;
+/* App Title */
+.app-title-main {
+  font-size: 28px;
   font-weight: 700;
-  color: var(--color-accent);
-  letter-spacing: -0.02em;
-}
-
-.app-brand-name {
-  font-size: 17px;
-  font-weight: 600;
   letter-spacing: -0.021em;
   color: var(--color-text-primary);
   margin: 0;
-  padding: 0;
+}
+
+.app-logo {
+  color: var(--color-text-primary);
+  font-size: 28px;
 }
 
 /* Main Container */
@@ -51,18 +49,11 @@
 }
 
 .app-header {
-  text-align: center;
-}
-
-.app-title {
-  font-size: 28px;
-  font-weight: 700;
-  letter-spacing: -0.021em;
-  color: var(--color-text-primary);
-  margin-bottom: var(--space-1);
+  text-align: left;
 }
 
 .app-subtitle {
+  text-align: center;
   font-size: 17px;
   font-weight: 400;
   letter-spacing: -0.021em;
@@ -201,15 +192,12 @@
 /* Responsive */
 @media (max-width: 640px) {
   .app {
-    padding: var(--space-2) 0 0 0;
+    padding: 0;
   }
 
-  .app-branding {
-    padding: var(--space-2) var(--space-2);
-  }
-
-  .app-brand-name {
-    font-size: 16px;
+  .app-branding-header {
+    gap: var(--space-1);
+    padding: var(--space-2);
   }
 
   .app-container {
@@ -217,8 +205,13 @@
     padding: var(--space-3) var(--space-2);
   }
   
-  .app-title {
+  .app-title-main {
     font-size: 24px;
+  }
+
+  .app-logo-image {
+    width: 36px;
+    height: 36px;
   }
 
   .app-footer {

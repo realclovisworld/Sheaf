@@ -79,14 +79,13 @@ function App() {
 
   return (
     <div className="app">
-      <header className="app-branding">
-        <span className="app-logo">𝐒</span>
-        <h2 className="app-brand-name">Sheaf</h2>
+      <header className="app-branding-header">
+        <img src="/logo.jpeg" alt="Sheaf Logo" className="app-logo-image" />
+        <h1 className="app-title-main">Sheaf</h1>
       </header>
 
       <main className="app-container">
         <header className="app-header">
-          <h1 className="app-title">Bring your pages together</h1>
           <p className="app-subtitle">Drop files to gather them into a single document</p>
         </header>
 
