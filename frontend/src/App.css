@@ -1,59 +1,137 @@
-.App {
+.app {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background-color: var(--color-cream-bg);
   display: flex;
   flex-direction: column;
 }
 
-.App-header {
-  background-color: rgba(0, 0, 0, 0.1);
-  padding: 40px 20px;
-  text-align: center;
-  color: white;
-}
-
-.App-header h1 {
+.app-header {
+  background-color: var(--color-cream-bg);
+  border-bottom: 1px solid var(--color-cream-border);
+  padding: var(--space-3xl) var(--space-lg);
   margin: 0;
-  font-size: 48px;
 }
 
-.App-header p {
-  margin: 10px 0 0 0;
-  font-size: 18px;
-  opacity: 0.9;
+.app-header h1 {
+  font-family: var(--font-primary);
+  font-size: 2rem;
+  font-weight: 400;
+  color: var(--color-black-soft);
+  margin: 0 0 var(--space-sm) 0;
+  line-height: var(--line-height-tight);
+  letter-spacing: -0.5px;
 }
 
-.App-main {
+.app-header p {
+  font-family: var(--font-secondary);
+  font-size: var(--size-secondary);
+  color: var(--color-gray-warm);
+  margin: 0;
+  letter-spacing: 0.3px;
+}
+
+.app-main {
   flex: 1;
-  padding: 40px 20px;
-  max-width: 800px;
+  padding: var(--space-3xl) var(--space-lg);
+  max-width: 680px;
   margin: 0 auto;
   width: 100%;
 }
 
-.error-message {
-  background-color: #f44336;
-  color: white;
-  padding: 15px;
-  border-radius: 4px;
-  margin-bottom: 20px;
-  text-align: center;
+.message {
+  padding: var(--space-md) var(--space-lg);
+  border-radius: 2px;
+  font-family: var(--font-secondary);
+  font-size: var(--size-secondary);
+  margin-bottom: var(--space-xl);
+  animation: slideIn var(--transition-normal);
+}
+
+.message--error {
+  background-color: #fdf4f0;
+  border-left: 3px solid var(--color-error);
+  color: var(--color-rust-dark);
+}
+
+.message--success {
+  background-color: #f4f8f0;
+  border-left: 3px solid var(--color-success);
+  color: var(--color-success);
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .size-info {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: white;
-  padding: 15px;
-  border-radius: 4px;
-  margin: 15px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-md);
+  background-color: rgba(160, 96, 78, 0.04);
+  border-left: 2px solid var(--color-rust);
+  margin: var(--space-xl) 0 var(--space-xl) 0;
+  font-family: var(--font-secondary);
+  font-size: var(--size-secondary);
+}
+
+.size-info__label {
+  color: var(--color-gray-warm);
+  font-weight: 500;
+}
+
+.size-info__value {
+  color: var(--color-black-soft);
+  font-family: var(--font-primary);
+  font-size: 1rem;
+}
+
+.size-info__value--warn {
+  color: var(--color-error);
+}
+
+.app-footer {
+  margin-top: var(--space-2xl);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--color-cream-border);
   text-align: center;
 }
 
-.size-info p {
+.app-footer p {
+  font-family: var(--font-secondary);
+  font-size: var(--size-small);
+  color: var(--color-gray-warm);
   margin: 0;
+  letter-spacing: 0.2px;
 }
 
-.size-warning {
-  color: #ffeb3b;
-  font-weight: bold;
+/* Responsive */
+@media (max-width: 640px) {
+  .app-header {
+    padding: var(--space-2xl) var(--space-md);
+  }
+
+  .app-header h1 {
+    font-size: 1.75rem;
+  }
+
+  .app-main {
+    padding: var(--space-2xl) var(--space-md);
+  }
+
+  .message {
+    padding: var(--space-md);
+    font-size: 0.8rem;
+  }
+
+  .size-info {
+    font-size: 0.75rem;
+  }
 }

@@ -9,11 +9,12 @@ function FileUploader({ onFilesSelected }) {
     const pdfFiles = Array.from(newFiles).filter((file) => file.type === 'application/pdf');
     
     if (pdfFiles.length !== newFiles.length) {
-      alert('Only PDF files are allowed');
+      alert('Only PDF files are supported.');
+      return;
     }
 
     if (pdfFiles.length > 10) {
-      alert('Maximum 10 files allowed');
+      alert('Maximum 10 documents per bind.');
       return;
     }
 
@@ -43,7 +44,7 @@ function FileUploader({ onFilesSelected }) {
 
   return (
     <div
-      className={`file-uploader ${dragActive ? 'drag-active' : ''}`}
+      className={`file-uploader ${dragActive ? 'file-uploader--active' : ''}`}
       onDragEnter={handleDrag}
       onDragLeave={handleDrag}
       onDragOver={handleDrag}
@@ -55,17 +56,19 @@ function FileUploader({ onFilesSelected }) {
         multiple
         accept=".pdf"
         onChange={handleChange}
-        className="file-input"
+        className="file-uploader__input"
+        aria-label="Upload PDF files"
       />
-      <div className="upload-prompt">
-        <p>📄 Drag and drop PDF files here</p>
-        <p>or</p>
+      <div className="file-uploader__content">
+        <div className="file-uploader__icon">📄</div>
+        <p className="file-uploader__text">Drag PDFs here.</p>
         <button
           type="button"
           onClick={() => fileInputRef.current.click()}
-          className="browse-button"
+          className="file-uploader__button"
+          aria-label="Browse and select PDF files"
         >
-          Browse Files
+          Or browse
         </button>
       </div>
     </div>
