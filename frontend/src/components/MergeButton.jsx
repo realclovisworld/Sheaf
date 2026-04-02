@@ -4,16 +4,20 @@ import './MergeButton.css';
 function MergeButton({ onClick, disabled, loading }) {
   return (
     <button
-      className="merge-button"
+      type="button"
+      className={`merge-button ${loading ? 'merge-button--loading' : ''}`}
       onClick={onClick}
       disabled={disabled || loading}
-      aria-busy={loading}
-      aria-label={loading ? 'Binding documents...' : 'Bind documents'}
+      aria-label={loading ? 'Merging PDFs' : 'Merge PDFs'}
     >
-      <span className="merge-button__text">
-        {loading ? 'Binding…' : 'Bind'}
-      </span>
-      {loading && <span className="merge-button__spinner" />}
+      {loading ? (
+        <>
+          <span className="merge-button__spinner"></span>
+          <span className="merge-button__text">Merging</span>
+        </>
+      ) : (
+        'Merge PDFs'
+      )}
     </button>
   );
 }

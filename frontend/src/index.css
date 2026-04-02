@@ -1,44 +1,61 @@
-@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital@0;1&family=IBM+Plex+Sans:wght@400;500&display=swap');
-
 :root {
-  /* Colors */
-  --color-rust: #a0604e;
-  --color-rust-light: #b8746a;
-  --color-rust-dark: #8a4e3f;
+  /* Apple Color Palette - Light Mode */
+  --color-bg-primary: #f5f5f7;
+  --color-surface: rgba(255, 255, 255, 0.72);
+  --color-surface-hover: rgba(0, 0, 0, 0.03);
+  --color-surface-selected: rgba(0, 113, 227, 0.1);
   
-  --color-cream-bg: #faf8f4;
-  --color-cream-border: #e8e4da;
+  --color-text-primary: #1d1d1f;
+  --color-text-secondary: #86868b;
+  --color-text-tertiary: #a1a1a6;
   
-  --color-black-soft: #2a2620;
-  --color-gray-warm: #7a7066;
-  --color-gray-light: #d4cfc6;
+  --color-accent: #0071e3;
+  --color-accent-lighter: #0077ed;
+  --color-success: #34c759;
+  --color-destructive: #ff3b30;
   
-  --color-success: #6b8e5f;
-  --color-error: #a0604e;
+  /* Dark Mode */
+  @media (prefers-color-scheme: dark) {
+    --color-bg-primary: #000000;
+    --color-surface: rgba(28, 28, 30, 0.72);
+    --color-surface-hover: rgba(255, 255, 255, 0.03);
+    --color-surface-selected: rgba(0, 113, 227, 0.2);
+    
+    --color-text-primary: #f5f5f7;
+    --color-text-secondary: #98989d;
+    --color-text-tertiary: #6e6e73;
+  }
   
-  /* Typography */
-  --font-primary: 'Newsreader', Georgia, serif;
-  --font-secondary: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  /* Typography Scale */
+  --font-large-title: 34px 700 -0.022em;
+  --font-title1: 28px 700 -0.021em;
+  --font-title2: 22px 700 -0.021em;
+  --font-headline: 17px 600 -0.021em;
+  --font-body: 17px 400 -0.021em;
+  --font-callout: 16px 400 -0.021em;
+  --font-subhead: 15px 400 -0.021em;
+  --font-footnote: 13px 400 -0.006em;
+  --font-caption: 12px 400 0em;
   
-  --size-primary: 1.25rem;
-  --size-secondary: 0.875rem;
-  --size-small: 0.75rem;
+  /* Easing Functions */
+  --ease-standard: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-entrance: cubic-bezier(0.0, 0.0, 0.2, 1);
+  --ease-exit: cubic-bezier(0.4, 0.0, 1, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
   
-  --line-height-tight: 1.4;
-  --line-height-relaxed: 1.7;
+  /* Durations */
+  --duration-micro: 100ms;
+  --duration-short: 200ms;
+  --duration-medium: 400ms;
+  --duration-long: 600ms;
   
-  /* Spacing */
-  --space-xs: 0.5rem;
-  --space-sm: 1rem;
-  --space-md: 1.5rem;
-  --space-lg: 2rem;
-  --space-xl: 2.5rem;
-  --space-2xl: 3rem;
-  --space-3xl: 4rem;
-  
-  /* Transitions */
-  --transition-quick: 0.15s ease;
-  --transition-normal: 0.2s ease;
+  /* Spacing Grid (8pt base) */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-6: 48px;
+  --space-8: 64px;
 }
 
 * {
@@ -54,18 +71,14 @@ html {
 }
 
 body {
-  font-family: var(--font-primary);
-  color: var(--color-black-soft);
-  background-color: var(--color-cream-bg);
-  line-height: var(--line-height-relaxed);
-  font-size: var(--size-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  transition: background-color var(--duration-medium) var(--ease-standard),
+              color var(--duration-medium) var(--ease-standard);
 }
 
-input, button, textarea, select {
-  font-family: var(--font-secondary);
-}
-
-/* Accessibility */
+/* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;

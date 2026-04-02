@@ -1,317 +1,350 @@
-# PDF Binder - Design System
+# PDF Merger - Apple Design Language
 
-## Overview
+This document describes the visual design system and implementation details for the PDF Merger application, based on Apple's Human Interface Guidelines.
 
-A quiet, intentional interface inspired by craft and print traditions. The visual language emphasizes function over ornamentation, with a sophisticated palette and deliberate spacing.
+## Design Philosophy
 
----
+The interface embodies Apple's design principles: **meticulous craftsmanship, understated elegance, and fluid motion**. Every element feels considered, every animation purposeful. The interface disappears; only the task remains.
 
 ## Color Palette
 
-### Primary
-- **Rust** `#a0604e` – Warm, grounded accent color
-  - Light variant: `#b8746a`
-  - Dark variant: `#8a4e3f`
+### Light Mode
+- **Background**: `#f5f5f7` — Apple's signature warm gray
+- **Surface**: `rgba(255, 255, 255, 0.72)` with `backdrop-filter: blur(20px)` — frosted glass
+- **Text (Primary)**: `#1d1d1f` — almost black
+- **Text (Secondary)**: `#86868b` — Apple's signature gray
+- **Text (Tertiary)**: `#a1a1a6` — disabled, placeholder text
+- **Accent Blue**: `#0071e3` — Apple's system blue (use sparingly)
+- **Accent Green**: `#34c759` — success states only
+- **Destructive**: `#ff3b30` — rare, intentional use only
 
-### Neutral
-- **Cream (Background)** `#faf8f4` – Soft, warm white
-- **Cream (Border)** `#e8e4da` – Subtle dividers
-- **Black (Soft)** `#2a2620` – Primary text, warmer than pure black
-- **Gray (Warm)** `#7a7066` – Secondary text, labels
-- **Gray (Light)** `#d4cfc6` – Disabled states
-
-### Semantic
-- **Success** `#6b8e5f` – Validation, confirmations
-- **Error** `#a0604e` – Same as rust (unified palette)
-
----
+### Dark Mode
+Automatic via `prefers-color-scheme: dark`
+- **Background**: `#000000`
+- **Surface**: `rgba(28, 28, 30, 0.72)` with blur
+- **Text**: `#f5f5f7` / `#98989d` / `#6e6e73`
 
 ## Typography
 
-### Fonts
-- **Primary**: Newsreader (serif) – Headlines, primary copy
-- **Secondary**: IBM Plex Sans (sans-serif) – UI, labels, secondary copy
-
-### Sizes & Usage
-
-| Role | Font | Size | Line Height | Weight | Letter-spacing |
-|------|------|------|-------------|--------|---|
-| H1 | Newsreader | 2rem | 1.4 | 400 | -0.5px |
-| H2 | Newsreader | 1.1rem | 1.4 | 400 | -0.3px |
-| Body | Newsreader | 1.25rem | 1.7 | 400 | 0 |
-| Secondary | IBM Plex | 0.875rem | 1.4 | 400 | 0.3px |
-| Small | IBM Plex | 0.75rem | 1.4 | 400 | 0.2px |
-| Labels | IBM Plex | 0.875rem | 1.4 | 500 | 0.3px |
-
-**Philosophy**: The serif font creates warmth and personality. Sans-serif is reserved for UI controls and supporting information. All text leans toward generous sizing for legibility.
-
----
-
-## Spacing System
-
-Vertical spacing is intentionally varied, not uniform. This creates rhythm and visual interest.
-
-```
---space-xs:  0.5rem    (8px)
---space-sm:  1rem      (16px)
---space-md:  1.5rem    (24px)
---space-lg:  2rem      (32px)
---space-xl:  2.5rem    (40px)
---space-2xl: 3rem      (48px)
---space-3xl: 4rem      (64px)
+**Font Stack**: 
+```css
+font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
 ```
 
-### Container Layout
-- Max-width: 680px (narrow, focused)
-- Margin top: 4rem (generous breathing room)
-- Padding sides: 2rem (comfortable gutters)
-
-### Vertical Rhythm (Intentionally Asymmetrical)
-1. Header to dropzone: 3rem
-2. Dropzone to file list: 2.5rem
-3. File list to bind button: 3rem
-4. Button to footer: 2rem
-
-**Result**: Visual movement without uniformity. Creates a sense of flow.
-
----
+### Type Scale
+- **Large Title**: 34px, weight 700, tracking -0.022em
+- **Title 1**: 28px, weight 700, tracking -0.021em
+- **Title 2**: 22px, weight 700, tracking -0.021em
+- **Headline**: 17px, weight 600, tracking -0.021em
+- **Body**: 17px, weight 400, tracking -0.021em
+- **Callout**: 16px, weight 400, tracking -0.021em
+- **Subhead**: 15px, weight 400, tracking -0.021em
+- **Footnote**: 13px, weight 400, tracking -0.006em
+- **Caption**: 12px, weight 400, tracking 0em
 
 ## Components
 
-### File Uploader (Dropzone)
+### Dropzone (File Upload)
+**Visual Design**:
+- Full-bleed rounded rectangle with continuous corners (`border-radius: 20px`)
+- Background: `rgba(255, 255, 255, 0.72)` with `backdrop-filter: blur(20px) saturate(180%)`
+- Border: `1px rgba(255, 255, 255, 0.2)` — barely visible
+- Subtle inset glow: `inset 0 0 0 1px rgba(255, 255, 255, 0.1)`
+- Soft shadow: `0 4px 24px rgba(0, 0, 0, 0.04)`
 
-**Visual**:
-- Border: 2px dashed cream
-- Background: White
-- Border-radius: 2px (subtle, not rounded)
-- Icon: Text symbol (📄)
-- CTA text: "Drag PDFs here. / Or browse"
+**Content**:
+- Center icon (SF Symbol or emoji): 64px
+- Title: "Drop PDFs here" (Title 2)
+- Hint: "or click to browse" (Callout, secondary color)
+- Button: "Select Files" (Callout, outlined style)
 
-**Interactive**:
-- Hover: Faint rust background wash appears
-- Drag-active: Border becomes rust, background stays white
-- Focus (button): 2px rust outline, 2px offset
+**Interaction States**:
+- **Hover**: No change on desktop (not clicked)
+- **Drag Over**: 
+  - Scale: `scale(1.02)` 
+  - Background: `rgba(0, 113, 227, 0.08)`
+  - Border: `rgba(0, 113, 227, 0.5)`
+  - Icon bounce: `scale(1.1) translateY(-4px)` with bounce easing
+- **Active**: Opacity 0.8 momentarily
 
-**Copy Philosophy**:
-- Direct, calm language
-- No exclamation marks
-- No action verbs ("Upload", "Choose")
-- Preference: "Drag", "Browse"
+**Animations**:
+- Duration: 400ms standard, 500ms for bounce
+- Easing: `cubic-bezier(0.34, 1.56, 0.64, 1)` for bounce physics
 
----
+### File List (Files App Style)
+**Row Design**:
+- Minimum touch height: 44px
+- Padding: 16px horizontal, 12px vertical
+- Separator: 1px divider between rows
 
-### File List
+**Content Layout**:
+```
+[icon 24px] [12px] [filename] [flex spacer] [size] [12px] [remove button] [16px]
+```
 
-**Visual**:
-- Container: 1px border, cream color
-- Items: Subtle dividers (cream borders)
-- Numbering: Sequential (1., 2., 3.)
-- Hover state: Background tint (rust at 3% opacity)
+**Typography**:
+- Filename: Body (17px, primary color)
+- File size: Footnote (13px, tertiary color)
+- Icon: 24px, secondary color
 
-**Secondary Actions**:
-- Remove button appears only on row hover
-- Icon: ✕ (simple, minimal)
-- Color: Warm gray at 40% opacity until hover
-- Hover: Changes to error color
+**Interaction States**:
+- **Normal**: `background: var(--color-surface)`
+- **Hover**: `background: rgba(0, 0, 0, 0.03)` — barely perceptible
+- **Remove button**: Appears on hover (opacity transition)
+- **Remove button hover**: `background: rgba(255, 59, 48, 0.1)`, color `#ff3b30`
+- **Active**: `opacity: 0.8` momentarily
 
-**Responsive**:
-- On mobile: Hide file size column
-- Maintain numbering and remove action
+**Focus States**:
+- 2px solid outline with `outline-offset: 2px`
+- Color: `var(--color-accent)`
 
----
+### Merge Button (Apple Button)
+**Design**:
+- Shape: Pill (`border-radius: 980px`)
+- Background: `#0071e3` (Apple blue)
+- Color: White
+- Padding: 12px 32px
+- Font: 17px, weight 600
+- Minimum width: 180px
 
-### Bind Button
+**States**:
+- **Normal**: Solid blue
+- **Hover**: `#0077ed` (slightly lighter)
+- **Active**: `scale(0.96)` with 100ms easing
+- **Disabled**: `background: rgba(0, 0, 0, 0.05)`, `color: rgba(0, 0, 0, 0.25)`
+- **Loading**: Spinner replaces text (blue spinner, 16px)
 
-**Visual**:
-- Background: Rust
-- Text: "Bind" (short, actionable)
-- Padding: 0.875rem 2rem
-- Border-radius: 2px
-
-**Interactive**:
-- Hover: Slightly darker rust, lift 1px, subtle shadow
-- Active: Returns to baseline
-- Disabled: Gray with reduced opacity
-- Loading: Shows spinner without text changes ("Binding…")
-
-**Focus**:
-- 2px rust outline
-- 2px offset (accessible, not intrusive)
-
----
-
-### Messages (Success / Error)
-
-**Error**:
-- Background: #fdf4f0 (light rust wash)
-- Border-left: 3px solid rust
-- Animation: Slide in from above (0.2s)
-
-**Success**:
-- Background: Light green wash
-- Border-left: 3px solid success green
-- Auto-dismisses after 3 seconds
-
-**Copy**:
-- Error: "Select at least two documents." / "Merge failed."
-- Success: "PDF bound and ready."
-- Quiet tone, no theatrical language
-
----
-
-## Micro-Interactions
-
-### Transitions
-All transitions: 0.15s–0.2s `ease` (not `ease-in-out`)
-
-### Hover States
-- Files: Background tint fades in
-- Button: Color darkens, slight lift
-- Remove icon: Opacity increases on parent hover
-
-### Focus States
-- 2px solid outline
-- Same color as element (rust for primary, etc.)
-- 2px offset from element
-- Always visible (not subtle)
+**Focus State**:
+- 2px solid outline with `outline-offset: 2px`
 
 ### Loading State
-- Spinner: 12px, 2px border, rotates at 0.8s
-- Text updates: "Binding…"
-- Button remains clickable? No, disabled
+**Progress Indicator**:
+- Indeterminate circular progress ring
+- Stroke width: 2px
+- Color: Apple blue `#0071e3`
+- Animation: `stroke-dashoffset` with `cubic-bezier(0.4, 0.0, 0.2, 1)`
+- Size: 32px (dropzone), 16px (button)
 
----
+**Label**:
+- Text: "Merging..." (Callout, secondary color)
+- Optional subtext: "3 of 4 documents" (Caption, tertiary)
+
+### Success & Error Messages
+**Container**:
+- Padding: 16px
+- Border-radius: 12px
+- Font: 17px, weight 400
+- Icon: 20px symbol
+
+**Success**:
+- Background: `rgba(52, 199, 89, 0.1)`
+- Color: `#1f7818` (light), `#30b0c0` (dark mode)
+- Animation: Slide up + fade in, 200ms entrance easing
+
+**Error**:
+- Background: `rgba(255, 59, 48, 0.1)`
+- Color: `#d70015` (light), `#ff453a` (dark mode)
+- Animation: Same as success
+
+### Empty State
+**Layout**:
+- Vertically centered
+- Icon: 48px, opacity 0.5
+- Title: "No PDFs" (Title 2, primary)
+- Body: "Drop files to merge them into one document" (Body, secondary)
+- Max-width: 300px
+
+**Spacing**:
+- Gap between elements: 8px
+
+## Layout & Spacing
+
+### Grid System
+**8pt base grid**:
+- Micro: 8px (`--space-1`)
+- Small: 16px (`--space-2`)
+- Regular: 24px (`--space-3`)
+- Medium: 32px (`--space-4`)
+- Large: 48px (`--space-6`)
+- Hero: 64px (`--space-8`)
+
+### Container
+- Max-width: 800px
+- Margin: 0 auto
+- Padding: 24px (desktop), 16px (mobile)
+
+### Vertical Rhythm
+- App header to dropzone: 32px
+- Dropzone to list: 32px
+- List to button: 32px
+- Consistent, grid-based spacing (no arbitrary values)
+
+## Motion & Animation
+
+### Easing Functions
+- **Standard**: `cubic-bezier(0.25, 0.1, 0.25, 1)` — default, smooth
+- **Entrance**: `cubic-bezier(0.0, 0.0, 0.2, 1)` — decelerate on entry
+- **Exit**: `cubic-bezier(0.4, 0.0, 1, 1)` — accelerate on exit
+- **Bounce**: `cubic-bezier(0.34, 1.56, 0.64, 1)` — playful, spring-like
+
+### Durations
+- **Micro**: 100ms (button press feedback)
+- **Short**: 200ms (hover states, toggles)
+- **Medium**: 400ms (transitions, reveals)
+- **Long**: 600ms (page transitions, large reveals)
+
+### Principles
+- **Content-aware**: Larger elements move slower
+- **Continuity**: Elements maintain identity across states
+- **Responsiveness**: Immediate acknowledgment, even if processing continues
+- **Asymmetry**: Timing varies slightly between entrance/exit for natural feel
+
+### Specific Animations
+
+#### Dropzone Drag-Over
+```css
+.dropzone--drag-over {
+  transform: scale(1.02);
+  transition: transform 400ms cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.dropzone--drag-over .dropzone__icon {
+  transform: scale(1.1) translateY(-4px);
+  transition: transform 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+```
+
+#### Button Press
+```css
+.merge-button:active {
+  transform: scale(0.96);
+  transition: transform 100ms ease;
+}
+```
+
+#### Message Appearance
+```css
+@keyframes messageSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.message {
+  animation: messageSlide 200ms cubic-bezier(0.0, 0.0, 0.2, 1);
+}
+```
+
+#### Spinner
+```css
+@keyframes spinnerRotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  animation: spinnerRotate 0.8s linear infinite;
+}
+```
 
 ## Responsive Behavior
 
 ### Mobile (< 640px)
+- **Margins**: Reduce to 16px
+- **Padding**: 16px on all sides
+- **Dropzone**: Minimum height 160px, padding 16px
+- **Icons**: 48px (from 64px)
+- **Typography**: Reduce title sizes by 1-2 sizes
+- **File list**: Remove buttons always visible (not hover-reveal)
+- **Button**: Full width with 16px margins
 
-**Header**:
-- Padding reduces: 2rem top, 1rem sides
-- H1 size: 1.75rem
+### Key Breakpoint
+- **640px**: Switch from desktop to mobile layout
 
-**Main content**:
-- Padding: 2rem top, 1rem sides
-- Max-width: still 680px (on viewport)
-
-**Dropzone**:
-- Padding reduces: 3rem vertical, 1rem horizontal
-- Icon: 2rem (from 2.5rem)
-- Text: 1.1rem (from 1.25rem)
-
-**File list**:
-- Hide size column
-- Keep numbering and remove button
-- Reduce font sizes proportionally
-
-**Bind button**:
-- Text shortens? No, still "Bind"
-- Padding: 0.75rem 1.5rem
-- Font size: 0.875rem
-
-**Overall philosophy**: Simplify by removing secondary information (file sizes), but maintain hierarchy and interaction targets.
-
----
+### Principles
+- No hamburger menus or drawer navigation
+- Single column, maintained hierarchy
+- Touch targets minimum 44px height
 
 ## Accessibility
 
 ### Color Contrast
-- All text meets WCAG AA standards
-- Error/success rely on color + border for distinction
+- Text on background: WCAG AAA (7:1+)
+- Text on surface: WCAG AAA (7:1+)
+- All text sizes 17px+
 
-### Focus Management
-- Focus outlines always visible
-- 2px offset prevents overlap
-- Tab order: Natural DOM order (no JavaScript reordering)
-
-### ARIA
-- `aria-label` on buttons describing action
-- `aria-busy="true"` during loading
-- Error messages: `role="alert"`
-- Success: `role="status"` with auto-dismiss
+### Focus Visible
+- 2px solid outline, 2px offset
+- Color: Same as interaction element
+- Respects `:focus-visible` for keyboard navigation
 
 ### Reduced Motion
-- Respects `prefers-reduced-motion` media query
-- Animations set to 0.01ms when enabled
-- All interactions still work
-
----
-
-## Anti-Patterns (Deliberately Avoided)
-
-❌ **Gradients** – Creates visual noise
-❌ **Large border-radius** (16px+) – Feels too modern, trendy
-❌ **Shadow-lg elevation** – Not part of the metaphor
-❌ **Generic icons** – No Font Awesome, Lucide, or React Icons
-❌ **Centered cards** – Feels corporate
-❌ **Progress percentages** – Adds cognitive load
-❌ **Celebratory copy** – "Success! Your files are ready!"
-❌ **Drag-and-drop libraries** – Roll custom, maintain control
-
----
-
-## Physical Metaphors
-
-### Language Choices
-- **"Bind"** instead of "Merge" – Evokes manual bookbinding
-- **"Documents"** instead of "Files" – More human, less technical
-- **"PDF Binder"** instead of "PDF Merger" – Craft tool, not utility
-
-### Visual Metaphors
-- Cream background: Paper tray
-- Rust accents: Metal binding hardware
-- Simple borders: Clean, crafted edges
-- Asymmetrical spacing: Hand-assembled feeling
-
----
-
-## Implementation Notes
-
-### CSS Architecture
-- CSS Modules optional (used in some components)
-- Custom properties for all theme values
-- No Tailwind utilities
-- Intentional, semantic class names
-
-### Font Loading
-```html
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital@0;1&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
-```
-
-### Transitions
 ```css
---transition-quick: 0.15s ease;
---transition-normal: 0.2s ease;
-```
-
-### Focus Outline Helper
-```css
-.element:focus {
-  outline: 2px solid var(--color-rust);
-  outline-offset: 2px;
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 ```
 
----
+### Dynamic Type
+- Font sizes scale with system settings
+- Line heights maintain readability
+- Respects user preferences
 
-## Success Criteria Met
+### Semantic HTML
+- Buttons use `<button>` element
+- Links are `<a>` elements
+- Form inputs properly labeled
+- ARIA labels where needed
 
-✅ Feels like a **specialized tool**, not generic SaaS
-✅ Every animation has **slight imperfection** (asymmetrical timing, easing)
-✅ **No elements from component libraries** (custom everything)
-✅ Typography creates **clear hierarchy** without bold weights
-✅ Color palette **immediately distinctive**
-✅ Physical metaphors **consistent throughout**
-✅ Quiet, helpful tone in copy and UI
-✅ Accessible: Focus visible, color contrast, reduced-motion support
-✅ Responsive without sacrificing identity
+## Implementation Notes
 
----
+### CSS Custom Properties (Variables)
+All design tokens defined as CSS variables in `:root`:
+```css
+--color-accent: #0071e3
+--ease-standard: cubic-bezier(0.25, 0.1, 0.25, 1)
+--duration-medium: 400ms
+--space-3: 24px
+```
 
-## Future Considerations
+### Backdrop Filter Support
+Frosted glass effect uses `backdrop-filter: blur(20px) saturate(180%)`. Ensure fallback for unsupported browsers (opacity only).
 
-- Dark mode: Reverse palette (rust stays, creams → dark grays)
-- Multi-language: Newsreader supports multiple scripts via `unicode-range`
-- Print styles: Cream background removes for paper, focuses content
-- Animation preferences: Already respects `prefers-reduced-motion`
+### Dark Mode
+Automatic switching via `prefers-color-scheme: dark` media query. No manual toggle; respects system settings.
 
+### No Icon Library
+Uses system emojis and single-character symbols for simplicity:
+- `📄` — document
+- `✕` — close/remove
+- `✓` — checkmark/success
+
+## Design Tokens Summary
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| `--color-accent` | `#0071e3` | Buttons, links, highlights |
+| `--color-surface` | `rgba(255, 255, 255, 0.72)` | Cards, containers |
+| `--color-text-primary` | `#1d1d1f` | Headings, main text |
+| `--ease-standard` | `cubic-bezier(0.25, 0.1, 0.25, 1)` | Default motion |
+| `--duration-medium` | `400ms` | Standard transitions |
+| `--space-3` | `24px` | Regular spacing |
+
+## Success Criteria
+
+✓ Interface feels immediately familiar to Apple users  
+✓ Every animation uses Apple's specific easing curves  
+✓ No visual noise — every element earns its place  
+✓ Dark mode is seamless and automatic  
+✓ Typography adapts to system settings  
+✓ The app feels native, not web-based  
+✓ Confidence without arrogance — the design serves, never shows off

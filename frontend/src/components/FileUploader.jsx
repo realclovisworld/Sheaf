@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import './FileUploader.css';
 
-function FileUploader({ onFilesSelected }) {
+function FileUploader({ onFilesSelected, loading }) {
   const fileInputRef = useRef(null);
   const [dragActive, setDragActive] = React.useState(false);
 
@@ -14,7 +14,7 @@ function FileUploader({ onFilesSelected }) {
     }
 
     if (pdfFiles.length > 10) {
-      alert('Maximum 10 documents per bind.');
+      alert('Maximum 10 PDFs per merge.');
       return;
     }
 
@@ -44,7 +44,7 @@ function FileUploader({ onFilesSelected }) {
 
   return (
     <div
-      className={`file-uploader ${dragActive ? 'file-uploader--active' : ''}`}
+      className={`dropzone ${dragActive ? 'dropzone--drag-over' : ''} ${loading ? 'dropzone--loading' : ''}`}
       onDragEnter={handleDrag}
       onDragLeave={handleDrag}
       onDragOver={handleDrag}
@@ -56,20 +56,33 @@ function FileUploader({ onFilesSelected }) {
         multiple
         accept=".pdf"
         onChange={handleChange}
-        className="file-uploader__input"
+        className="dropzone__input"
         aria-label="Upload PDF files"
+        disabled={loading}
       />
-      <div className="file-uploader__content">
-        <div className="file-uploader__icon">📄</div>
-        <p className="file-uploader__text">Drag PDFs here.</p>
-        <button
-          type="button"
-          onClick={() => fileInputRef.current.click()}
-          className="file-uploader__button"
-          aria-label="Browse and select PDF files"
-        >
-          Or browse
-        </button>
+      <div className="dropzone__content">
+        {loading ? (
+          <>
+            <div className="dropzone__spinner">
+              <div className="spinner"></div>
+            </div>
+            <p className="dropzone__status">Merging...</p>
+          </>
+        ) : (
+          <>
+            <div className="dropzone__icon">📄</div>
+            <p className="dropzone__title">Drop PDFs here</p>
+            <p className="dropzone__hint">or click to browse</p>
+            <button
+              type="button"
+              onClick={() => fileInputRef.current.click()}
+              className="dropzone__button"
+              aria-label="Browse and select PDF files"
+            >
+              Select Files
+            </button>
+          </>
+        )}
       </div>
     </div>
   );

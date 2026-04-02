@@ -22,7 +22,7 @@ function App() {
 
   const handleMerge = async () => {
     if (files.length < 2) {
-      setError('Select at least two documents.');
+      setError('Select at least two PDFs.');
       return;
     }
 
@@ -50,7 +50,7 @@ function App() {
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = 'bound.pdf';
+      link.download = 'merged.pdf';
       document.body.appendChild(link);
       link.click();
       window.URL.revokeObjectURL(url);
@@ -58,7 +58,7 @@ function App() {
 
       setSuccess(true);
       setFiles([]);
-      setTimeout(() => setSuccess(false), 3000);
+      setTimeout(() => setSuccess(false), 2000);
     } catch (err) {
       setError(err.message || 'An error occurred.');
     } finally {
@@ -72,23 +72,25 @@ function App() {
 
   return (
     <div className="app">
-      <header className="app-header">
-        <h1>PDF Binder</h1>
-        <p>Combine pages into one.</p>
-      </header>
+      <main className="app-container">
+        <header className="app-header">
+          <h1 className="app-title">Merge PDFs</h1>
+          <p className="app-subtitle">Drop files to combine them into a single document</p>
+        </header>
 
-      <main className="app-main">
-        <FileUploader onFilesSelected={handleFilesSelected} />
+        <FileUploader onFilesSelected={handleFilesSelected} loading={loading} />
 
         {error && (
           <div className="message message--error" role="alert">
+            <span className="message-icon">⚠</span>
             {error}
           </div>
         )}
 
         {success && (
           <div className="message message--success" role="status">
-            PDF bound and ready.
+            <span className="message-icon">✓</span>
+            Downloaded successfully
           </div>
         )}
 
@@ -96,11 +98,13 @@ function App() {
           <>
             <FileList files={files} onRemoveFile={handleRemoveFile} />
             
-            <div className="size-info">
-              <span className="size-info__label">Total:</span>
-              <span className={`size-info__value ${maxSizeExceeded ? 'size-info__value--warn' : ''}`}>
-                {totalSizeMB} MB / 50 MB
+            <div className="file-info">
+              <span className="file-info-label">
+                {files.length} PDF{files.length !== 1 ? 's' : ''} • {totalSizeMB} MB
               </span>
+              {maxSizeExceeded && (
+                <span className="file-info-warning">Exceeds 50 MB limit</span>
+              )}
             </div>
 
             <MergeButton
@@ -111,9 +115,13 @@ function App() {
           </>
         )}
 
-        <footer className="app-footer">
-          <p>Max 10 documents, 50 MB total. PDF files only.</p>
-        </footer>
+        {!files.length && !loading && (
+          <div className="empty-state">
+            <div className="empty-state-icon">📄</div>
+            <p className="empty-state-title">No PDFs</p>
+            <p className="empty-state-text">Drop files to merge them into one document</p>
+          </div>
+        )}
       </main>
     </div>
   );
