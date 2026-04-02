@@ -1,18 +1,53 @@
 .app {
   min-height: 100vh;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
   background-color: var(--color-bg-primary);
-  padding: var(--space-3);
+  padding: var(--space-3) 0 0 0;
 }
 
+/* App Branding Header */
+.app-branding {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-3) var(--space-3);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  background-color: var(--color-surface);
+}
+
+@media (prefers-color-scheme: dark) {
+  .app-branding {
+    border-bottom-color: rgba(255, 255, 255, 0.08);
+  }
+}
+
+.app-logo {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-accent);
+  letter-spacing: -0.02em;
+}
+
+.app-brand-name {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.021em;
+  color: var(--color-text-primary);
+  margin: 0;
+  padding: 0;
+}
+
+/* Main Container */
 .app-container {
-  width: 100%;
-  max-width: 800px;
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
+  padding: var(--space-4) var(--space-3);
+  max-width: 800px;
+  width: 100%;
+  margin: 0 auto;
 }
 
 .app-header {
@@ -117,14 +152,51 @@
   max-width: 300px;
 }
 
+/* Footer */
+.app-footer {
+  padding: var(--space-3);
+  text-align: center;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  background-color: var(--color-surface);
+  margin-top: auto;
+}
+
+@media (prefers-color-scheme: dark) {
+  .app-footer {
+    border-top-color: rgba(255, 255, 255, 0.08);
+  }
+}
+
+.footer-text {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: -0.006em;
+  color: var(--color-text-secondary);
+}
+
+.footer-author {
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+
 /* Responsive */
 @media (max-width: 640px) {
   .app {
-    padding: var(--space-2);
+    padding: var(--space-2) 0 0 0;
   }
-  
+
+  .app-branding {
+    padding: var(--space-2) var(--space-2);
+  }
+
+  .app-brand-name {
+    font-size: 16px;
+  }
+
   .app-container {
     gap: var(--space-3);
+    padding: var(--space-3) var(--space-2);
   }
   
   .app-title {
@@ -133,5 +205,13 @@
   
   .empty-state {
     padding: var(--space-4);
+  }
+
+  .app-footer {
+    padding: var(--space-2);
+  }
+
+  .footer-text {
+    font-size: 12px;
   }
 }

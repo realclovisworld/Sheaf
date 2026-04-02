@@ -14,7 +14,7 @@ function FileUploader({ onFilesSelected, loading }) {
     }
 
     if (pdfFiles.length > 10) {
-      alert('Maximum 10 PDFs per merge.');
+      alert('Maximum 10 PDFs per sheaf.');
       return;
     }
 
@@ -66,12 +66,12 @@ function FileUploader({ onFilesSelected, loading }) {
             <div className="dropzone__spinner">
               <div className="spinner"></div>
             </div>
-            <p className="dropzone__status">Merging...</p>
+            <p className="dropzone__status">Binding</p>
           </>
         ) : (
           <>
             <div className="dropzone__icon">📄</div>
-            <p className="dropzone__title">Drop PDFs here</p>
+            <p className="dropzone__title">Gather your pages</p>
             <p className="dropzone__hint">or click to browse</p>
             <button
               type="button"
@@ -79,7 +79,7 @@ function FileUploader({ onFilesSelected, loading }) {
               className="dropzone__button"
               aria-label="Browse and select PDF files"
             >
-              Select Files
+              Select files
             </button>
           </>
         )}

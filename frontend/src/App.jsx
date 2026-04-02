@@ -44,14 +44,21 @@ function App() {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.detail || 'Merge failed.');
+        const detail = errorData.detail || 'Binding failed.';
+        // Map backend errors to sheaf metaphor
+        if (detail.includes('size')) {
+          throw new Error('This sheaf would be too heavy.');
+        } else if (detail.includes('number') || detail.includes('files')) {
+          throw new Error('Gather at least two pages.');
+        }
+        throw new Error(detail);
       }
 
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = 'merged.pdf';
+      link.download = 'sheaf.pdf';
       document.body.appendChild(link);
       link.click();
       window.URL.revokeObjectURL(url);
@@ -72,10 +79,15 @@ function App() {
 
   return (
     <div className="app">
+      <header className="app-branding">
+        <span className="app-logo">𝐒</span>
+        <h2 className="app-brand-name">Sheaf</h2>
+      </header>
+
       <main className="app-container">
         <header className="app-header">
-          <h1 className="app-title">Merge PDFs</h1>
-          <p className="app-subtitle">Drop files to combine them into a single document</p>
+          <h1 className="app-title">Bring your pages together</h1>
+          <p className="app-subtitle">Drop files to gather them into a single document</p>
         </header>
 
         <FileUploader onFilesSelected={handleFilesSelected} loading={loading} />
@@ -90,7 +102,7 @@ function App() {
         {success && (
           <div className="message message--success" role="status">
             <span className="message-icon">✓</span>
-            Downloaded successfully
+            Your sheaf is ready
           </div>
         )}
 
@@ -111,11 +123,17 @@ function App() {
         {!files.length && !loading && (
           <div className="empty-state">
             <div className="empty-state-icon">📄</div>
-            <p className="empty-state-title">No PDFs</p>
-            <p className="empty-state-text">Drop files to merge them into one document</p>
+            <p className="empty-state-title">No pages yet</p>
+            <p className="empty-state-text">Drop files to gather them into one document</p>
           </div>
         )}
       </main>
+
+      <footer className="app-footer">
+        <p className="footer-text">
+          © 2026 Sheaf. Built by <span className="footer-author">Clovis Atiki</span>
+        </p>
+      </footer>
     </div>
   );
 }

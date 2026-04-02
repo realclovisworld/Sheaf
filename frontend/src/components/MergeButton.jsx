@@ -8,15 +8,15 @@ function MergeButton({ onClick, disabled, loading }) {
       className={`merge-button ${loading ? 'merge-button--loading' : ''}`}
       onClick={onClick}
       disabled={disabled || loading}
-      aria-label={loading ? 'Merging PDFs' : 'Merge PDFs'}
+      aria-label={loading ? 'Binding PDFs' : 'Bind PDFs'}
     >
       {loading ? (
         <>
           <span className="merge-button__spinner"></span>
-          <span className="merge-button__text">Merging</span>
+          <span className="merge-button__text">Binding</span>
         </>
       ) : (
-        'Merge PDFs'
+        'Bind your pages'
       )}
     </button>
   );
