@@ -119,14 +119,6 @@ function App() {
             />
           </>
         )}
-
-        {!files.length && !loading && (
-          <div className="empty-state">
-            <div className="empty-state-icon">📄</div>
-            <p className="empty-state-title">No pages yet</p>
-            <p className="empty-state-text">Drop files to gather them into one document</p>
-          </div>
-        )}
       </main>
 
       <footer className="app-footer">

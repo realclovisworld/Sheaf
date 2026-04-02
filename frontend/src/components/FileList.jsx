@@ -15,7 +15,13 @@ function FileList({ files, onRemoveFile }) {
       {files.map((file, index) => (
         <div key={index} className="file-item">
           <div className="file-item__number">{index + 1}</div>
-          <div className="file-item__icon">📄</div>
+          <div className="file-item__icon">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" className="pdf-icon">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <text x="8" y="17" font-size="8" font-weight="bold" fill="white">PDF</text>
+            </svg>
+          </div>
           <div className="file-item__info">
             <p className="file-item__name">{file.name}</p>
             <p className="file-item__size">{formatFileSize(file.size)}</p>

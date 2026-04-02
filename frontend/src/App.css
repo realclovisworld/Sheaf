@@ -119,39 +119,6 @@
   }
 }
 
-/* Empty State */
-.empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-2);
-  padding: var(--space-6);
-  text-align: center;
-  color: var(--color-text-secondary);
-}
-
-.empty-state-icon {
-  font-size: 48px;
-  opacity: 0.5;
-}
-
-.empty-state-title {
-  font-size: 22px;
-  font-weight: 700;
-  letter-spacing: -0.021em;
-  color: var(--color-text-primary);
-  margin-bottom: var(--space-1);
-}
-
-.empty-state-text {
-  font-size: 17px;
-  font-weight: 400;
-  letter-spacing: -0.021em;
-  color: var(--color-text-secondary);
-  max-width: 300px;
-}
-
 /* Footer */
 .app-footer {
   padding: var(--space-3);
@@ -201,10 +168,6 @@
   
   .app-title {
     font-size: 24px;
-  }
-  
-  .empty-state {
-    padding: var(--space-4);
   }
 
   .app-footer {
