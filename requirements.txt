@@ -1,6 +1,0 @@
-fastapi==0.104.1
-mangum==0.21.0
-pikepdf==9.2.0
-python-multipart==0.0.6
-python-dotenv==1.0.0
-uvicorn==0.24.0

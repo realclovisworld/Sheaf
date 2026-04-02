@@ -87,7 +87,7 @@ function FileUploader({ onFilesSelected, loading }) {
             >
               Select files
             </button>
-            <p className="dropzone__info">Upload pdf files and bind a maximum of 50MB</p>
+            <p className="dropzone__info">Upload pdf files and bind a maximum of 20MB</p>
           </>
         )}
       </div>

@@ -4,6 +4,7 @@ import FileUploader from './components/FileUploader';
 import FileList from './components/FileList';
 import MergeButton from './components/MergeButton';
 import UploadProgressBar from './components/UploadProgressBar';
+import { mergePDFs } from './utils/merge';
 
 function App() {
   const [files, setFiles] = useState([]);
@@ -23,7 +24,7 @@ function App() {
 
   const handleMerge = async () => {
     if (files.length < 2) {
-      setError('Select at least two PDFs.');
+      setError('Gather at least two pages.');
       return;
     }
 
@@ -32,33 +33,14 @@ function App() {
     setSuccess(false);
 
     try {
-      const formData = new FormData();
-      files.forEach((file) => {
-        formData.append('files', file);
-      });
+      // Client-side PDF merging using pdf-lib
+      const result = await mergePDFs(files);
 
-      const response = await fetch('/api/merge', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        const detail = errorData.detail || 'Binding failed.';
-        // Map backend errors to sheaf metaphor
-        if (detail.includes('size')) {
-          throw new Error('This sheaf would be too heavy.');
-        } else if (detail.includes('number') || detail.includes('files')) {
-          throw new Error('Gather at least two pages.');
-        }
-        throw new Error(detail);
-      }
-
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
+      // Download the merged PDF
+      const url = window.URL.createObjectURL(result.blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = 'sheaf.pdf';
+      link.download = result.name;
       document.body.appendChild(link);
       link.click();
       window.URL.revokeObjectURL(url);
@@ -75,7 +57,7 @@ function App() {
   };
 
   const totalSize = files.reduce((sum, file) => sum + file.size, 0);
-  const maxSizeExceeded = totalSize > 50 * 1024 * 1024;
+  const maxSizeExceeded = totalSize > 20 * 1024 * 1024;
 
   return (
     <div className="app">

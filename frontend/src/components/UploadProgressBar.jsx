@@ -1,7 +1,7 @@
 import React from 'react';
 import './UploadProgressBar.css';
 
-function UploadProgressBar({ files, maxSize = 50 * 1024 * 1024 }) {
+function UploadProgressBar({ files, maxSize = 20 * 1024 * 1024 }) {
   const formatFileSize = (bytes) => {
     if (bytes === 0) return '0 MB';
     const mb = bytes / (1024 * 1024);
@@ -28,7 +28,7 @@ function UploadProgressBar({ files, maxSize = 50 * 1024 * 1024 }) {
           <span className="progress-unit"> MB</span>
         </p>
         {maxSizeExceeded && (
-          <p className="progress-warning">Exceeds 50 MB limit</p>
+          <p className="progress-warning">Exceeds 20 MB limit</p>
         )}
       </div>
     </div>
