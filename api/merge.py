@@ -1,5 +1,5 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
-from fastapi.responses import FileResponse
+from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from mangum import Mangum
 import io
@@ -44,6 +44,7 @@ async def merge_pdfs(files: List[UploadFile] = File(...)):
     # Read and validate files
     pdf_data = []
     total_size = 0
+    file_contents = []
     
     for file in files:
         # Check file type
@@ -68,12 +69,13 @@ async def merge_pdfs(files: List[UploadFile] = File(...)):
         try:
             pdf = pikepdf.open(io.BytesIO(content))
             pdf_data.append(pdf)
+            file_contents.append(content)
         except Exception as e:
             raise HTTPException(status_code=400, detail=f"Invalid PDF: {file.filename}")
     
     # Merge PDFs
     try:
-        merged_pdf = pikepdf.open(io.BytesIO(await files[0].read()))
+        merged_pdf = pikepdf.open(io.BytesIO(file_contents[0]))
         
         for pdf in pdf_data[1:]:
             merged_pdf.pages.extend(pdf.pages)
@@ -83,10 +85,10 @@ async def merge_pdfs(files: List[UploadFile] = File(...)):
         merged_pdf.save(output)
         output.seek(0)
         
-        return FileResponse(
-            io.BytesIO(output.getvalue()),
+        return StreamingResponse(
+            iter([output.getvalue()]),
             media_type="application/pdf",
-            filename="merged.pdf",
+            headers={"Content-Disposition": "attachment; filename=merged.pdf"}
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error merging PDFs: {str(e)}")
