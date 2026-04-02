@@ -14,11 +14,13 @@ function FileList({ files, onRemoveFile }) {
     <div className="file-list">
       {files.map((file, index) => (
         <div key={index} className="file-item">
+          <div className="file-item__number">{index + 1}</div>
           <div className="file-item__icon">📄</div>
           <div className="file-item__info">
             <p className="file-item__name">{file.name}</p>
             <p className="file-item__size">{formatFileSize(file.size)}</p>
           </div>
+          <div className="file-item__status">✓</div>
           <button
             type="button"
             onClick={() => onRemoveFile(index)}

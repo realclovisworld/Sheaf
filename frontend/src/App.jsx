@@ -3,6 +3,7 @@ import './App.css';
 import FileUploader from './components/FileUploader';
 import FileList from './components/FileList';
 import MergeButton from './components/MergeButton';
+import UploadProgressBar from './components/UploadProgressBar';
 
 function App() {
   const [files, setFiles] = useState([]);
@@ -67,7 +68,6 @@ function App() {
   };
 
   const totalSize = files.reduce((sum, file) => sum + file.size, 0);
-  const totalSizeMB = (totalSize / (1024 * 1024)).toFixed(2);
   const maxSizeExceeded = totalSize > 50 * 1024 * 1024;
 
   return (
@@ -98,14 +98,7 @@ function App() {
           <>
             <FileList files={files} onRemoveFile={handleRemoveFile} />
             
-            <div className="file-info">
-              <span className="file-info-label">
-                {files.length} PDF{files.length !== 1 ? 's' : ''} • {totalSizeMB} MB
-              </span>
-              {maxSizeExceeded && (
-                <span className="file-info-warning">Exceeds 50 MB limit</span>
-              )}
-            </div>
+            <UploadProgressBar files={files} />
 
             <MergeButton
               onClick={handleMerge}

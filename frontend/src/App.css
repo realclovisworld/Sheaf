@@ -84,31 +84,6 @@
   }
 }
 
-/* File Info */
-.file-info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 var(--space-2);
-  font-size: 13px;
-  font-weight: 400;
-  letter-spacing: -0.006em;
-}
-
-.file-info-label {
-  color: var(--color-text-secondary);
-}
-
-.file-info-warning {
-  color: #d70015;
-}
-
-@media (prefers-color-scheme: dark) {
-  .file-info-warning {
-    color: #ff453a;
-  }
-}
-
 /* Empty State */
 .empty-state {
   display: flex;
