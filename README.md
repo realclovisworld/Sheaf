@@ -1,6 +1,6 @@
 # 𝐒 Sheaf — PDF Merger
 
-> **Bring your pages together.** A beautiful, Apple-inspired web application for merging multiple PDF files into a single document. No backend. No limits. All processing happens in your browser.
+> **Bring your pages together. *** A beautiful, Apple-inspired web application for merging multiple PDF files into a single document. No backend. No limits. All processing happens in your browser.
 
 ---
 
